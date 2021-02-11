@@ -1,55 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Footer from './components/Footer/Footer';
 import TodoForm from './components/TodoForm/TodoForm';
 import TodoList from './components/TodoList/TodoList';
-import { ITodo } from './interfaces/ITodo';
 import { StyledTodoPage } from './styled';
 import Header from './components/Header/Header';
+import { ITodo } from './interfaces/ITodo';
+import { useDispatch, useSelector } from 'react-redux';
+import { TodoState } from './interfaces/ITodoState';
+import { addTodo, removeTodo, toggleTodo } from '../../core/redux/actionCreators';
 
 const TodoPage: React.FC = () => {
-	const [todoList, setTodoList] = useState<ITodo[]>([]);
-	useEffect(() => {
-		const saved = JSON.parse(localStorage.getItem('todoList') || '[]');
-		setTodoList(saved);
-	}, []);
+	
+	const todoList = useSelector<TodoState,TodoState["todoList"]>((state)=>state.todoList);
+	const dispatch = useDispatch();
 
-	useEffect(() => {
-		localStorage.setItem('todoList', JSON.stringify(todoList));
-	}, [todoList]);
+	React.useEffect(() => {
+    localStorage.setItem('todoList', JSON.stringify(todoList));
+  }, [todoList]);
 
-	const addHandler = (title: string) => {
-		const newTodo: ITodo = {
-			title,
-			id: Date.now(),
-			completed: false,
-		};
-		if (!newTodo.title || newTodo.title.length > 20) {
-			alert('Input is empty or item length > 20');
-			return;
-		}
-		setTodoList((prev) => [newTodo, ...prev]);
-	};
+	const onAddTodo = (todo:ITodo)=>{
+		dispatch(addTodo(todo))
+	}
 
-	const removeHandler = (id: number) => {
-		setTodoList((prev) => prev.filter((todo) => todo.id !== id));
-	};
+	const onRemoveTodo = (todo:ITodo)=>{
+		dispatch(removeTodo(todo))
+	}
 
-	const toggleHandler = (id: number) => {
-		setTodoList((prev) =>
-			prev.map((todo) =>
-				todo.id === id ? { ...todo, completed: !todo.completed } : todo
-			)
-		);
-	};
+	const onToggleTodo = (todo:ITodo)=>{
+		dispatch(toggleTodo(todo))
+	}
 
 	return (
 		<StyledTodoPage>
 			<Header />
-			<TodoForm onAdd={addHandler} />
+			<TodoForm onAdd={onAddTodo} />
 			<TodoList
 				todoList={todoList}
-				onToggle={toggleHandler}
-				onRemove={removeHandler}
+				onToggle={onToggleTodo}
+				onRemove={onRemoveTodo}
 			/>
 			<Footer />
 		</StyledTodoPage>

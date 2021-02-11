@@ -9,10 +9,10 @@ const Todo: React.FC<TodoProps> = ({ todo, onToggle, onRemove }: TodoProps) => {
 				<input
 					type="checkbox"
 					checked={todo.completed}
-					onChange={() => onToggle(todo.id)}
+					onChange={() => onToggle(todo)}
 				/>
 				<StyledTitle isCompleted={todo.completed}>{todo.title}</StyledTitle>
-				<button onClick={() => onRemove(todo.id)}>Remove</button>
+				<button onClick={() => onRemove(todo)}>Remove</button>
 			</StyledTodoLabel>
 		</li>
 	);

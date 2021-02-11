@@ -1,3 +1,5 @@
+import { ITodo } from '../../interfaces/ITodo';
+
 export interface TodoFormProps {
-	onAdd(title: string): void;
+	onAdd(todo: ITodo | undefined): void;
 }

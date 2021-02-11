@@ -2,10 +2,10 @@ import { ITodo } from '../../interfaces/ITodo';
 
 export interface TodoProps {
 	todo: ITodo;
-	onToggle(id: number): void;
-	onRemove(id: number): void;
+	onToggle(todo: ITodo): void;
+	onRemove(todo: ITodo): void;
 }
 
 export interface CompletedProps {
-	isCompleted: boolean;
+	isCompleted: boolean | undefined;
 }
