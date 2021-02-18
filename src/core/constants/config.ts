@@ -1,7 +1,4 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-
-const config = {
+export const fbconfig = {
   apiKey: 'AIzaSyCq5i_-pm7FYbz9AyKcLSrgjPeu6285tq0',
   authDomain: 'simple-todo-3e9cf.firebaseapp.com',
   projectId: 'simple-todo-3e9cf',
@@ -11,7 +8,7 @@ const config = {
   measurementId: 'G-5EVF3CZR9F',
 };
 
-firebase.initializeApp(config);
-firebase.firestore();
-
-export default firebase;
+export const rrfconfig = {
+  userProfile: 'users',
+  useFirestoreForProfile: true,
+};

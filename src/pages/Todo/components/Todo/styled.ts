@@ -12,6 +12,24 @@ export const StyledTodoLabel = styled.label`
 `;
 
 export const StyledTitle = styled.span`
+  flex-basis: 60%;
   text-decoration: ${(props: CompletedProps) =>
     props.isCompleted ? 'line-through' : ''};
+`;
+
+export const linkStyle = {
+  color: 'black',
+  fontSize: '16px',
+  marginRight: '5px',
+  border: '1px solid black',
+  textDecoration: 'none',
+  padding: '5px 10px',
+};
+
+export const StyledInput = styled.input`
+  flex-basis: 5%;
+`;
+
+export const StyledButton = styled.button`
+  flex-basis: 10%;
 `;

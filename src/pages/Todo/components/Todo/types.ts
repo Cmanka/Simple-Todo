@@ -7,5 +7,5 @@ export interface TodoProps {
 }
 
 export interface CompletedProps {
-  isCompleted: boolean | undefined;
+  isCompleted: boolean;
 }

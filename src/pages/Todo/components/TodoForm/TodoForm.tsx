@@ -1,29 +1,32 @@
-import React, { useState, MouseEvent, memo, useCallback } from 'react';
-import { ITodo } from '../../../../core/interfaces/todo';
+import React, { useState, MouseEvent, memo } from 'react';
 import { StyledInput, StyledTodoForm } from './styled';
 import { TodoFormProps } from './types';
 
 const TodoForm: React.FC<TodoFormProps> = memo(({ onAdd }: TodoFormProps) => {
-  const [todo, setTodo] = useState<ITodo>({ title: '' });
+  const [title, setTitle] = useState<string>('');
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTodo({ title: event.target.value });
+    setTitle(event.target.value);
   };
 
   const addHandler = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    if (!todo?.title || todo.title.length > 20) {
+    if (!title || title.length > 20) {
       return;
     }
-    onAdd(todo);
-    setTodo({ title: '' });
+    onAdd({
+      title: title,
+      completed: false,
+      id: Date.now().toString(),
+    });
+    setTitle('');
   };
 
   return (
     <StyledTodoForm>
       <StyledInput
         onChange={changeHandler}
-        value={todo.title}
+        value={title}
         type="text"
         placeholder="Enter todo item"
       />

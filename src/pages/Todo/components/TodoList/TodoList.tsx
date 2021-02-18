@@ -1,14 +1,26 @@
 import React, { memo } from 'react';
+import { useSelector } from 'react-redux';
+import { selectTodoListLoadingState } from '../../../../core/selectors/todo';
 import Todo from '../Todo/Todo';
-import { StyledTodoList, StlyledUL } from './styled';
+import { StyledTodoList, StlyledUL, StyledTitle } from './styled';
 import { TodoListProps } from './types';
 
 const TodoList: React.FC<TodoListProps> = memo(
   ({ todoList, onToggle, onRemove }: TodoListProps) => {
+    const isLoading = useSelector(selectTodoListLoadingState);
+
+    if (isLoading) {
+      return (
+        <StyledTodoList>
+          <StyledTitle>List is loading</StyledTitle>
+        </StyledTodoList>
+      );
+    }
+
     if (!todoList.length) {
       return (
         <StyledTodoList>
-          <h1>List is empty</h1>
+          <StyledTitle>List is empty</StyledTitle>
         </StyledTodoList>
       );
     }

@@ -1,39 +1,117 @@
-import { ITodo } from '../interfaces/todo';
+import { ITodo } from './../interfaces/todo';
 import { TodoActionTypes } from '../actions/todo';
 
 export interface State {
+  todo: ITodo | null;
   todoList: ITodo[];
+  isLoading: boolean;
+  error: string | null;
 }
 
 const initialState: State = {
+  todo: null,
   todoList: [],
+  isLoading: false,
+  error: null,
 };
 
 export const reducer = (state: State = initialState, action: any): State => {
   switch (action.type) {
-    case TodoActionTypes.ADD_TODO: {
-      const newTodo: ITodo = {
-        id: Date.now(),
-        title: action.payload.todo.title,
-        completed: false,
+    case TodoActionTypes.FETCH_TODOLIST_LOADING: {
+      return {
+        ...state,
+        isLoading: true,
       };
-      return { ...state, todoList: [...state.todoList, newTodo] };
     }
-
-    case TodoActionTypes.REMOVE_TODO: {
-      const updatedTodoList: ITodo[] = state.todoList.filter(
-        (todo) => todo.id !== action.payload.todo.id
-      );
-      return { ...state, todoList: updatedTodoList };
+    case TodoActionTypes.FETCH_TODOLIST_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        todoList: action.payload.todoList,
+      };
     }
-
-    case TodoActionTypes.TOGGLE_TODO: {
-      const updatedTodoList: ITodo[] = state.todoList.map((todo) =>
+    case TodoActionTypes.FETCH_TODOLIST_FAILED: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+      };
+    }
+    case TodoActionTypes.ADD_TODO_LOADING: {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case TodoActionTypes.ADD_TODO_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        todo: action.payload.todo,
+        todoList: [...state.todoList, action.payload.todo],
+      };
+    }
+    case TodoActionTypes.ADD_TODO_FAILED: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+      };
+    }
+    case TodoActionTypes.REMOVE_TODO_LOADING: {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case TodoActionTypes.REMOVE_TODO_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        todo: action.payload.todo,
+        todoList: [
+          ...state.todoList.filter(
+            (todo) => todo.id !== action.payload.todo.id
+          ),
+        ],
+      };
+    }
+    case TodoActionTypes.REMOVE_TODO_FAILED: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+      };
+    }
+    case TodoActionTypes.TOGGLE_TODO_LOADING: {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case TodoActionTypes.TOGGLE_TODO_SUCCESS: {
+      const updatedList: ITodo[] = state.todoList.map((todo) =>
         todo.id === action.payload.todo.id
           ? { ...todo, completed: !todo.completed }
           : todo
       );
-      return { ...state, todoList: updatedTodoList };
+      return {
+        ...state,
+        isLoading: false,
+        todo: action.payload.todo,
+        todoList: updatedList,
+        error: null,
+      };
+    }
+    case TodoActionTypes.TOGGLE_TODO_FAILED: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+      };
     }
 
     default:

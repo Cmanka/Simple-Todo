@@ -6,27 +6,34 @@ import { StyledTodoPage } from './styled';
 import Header from './components/Header/Header';
 import { ITodo } from '../../core/interfaces/todo';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTodo, removeTodo, toggleTodo } from '../../core/actions/todo';
 import { selectTodoListState } from '../../core/selectors/todo';
+import {
+  toggleTodo,
+  getTodoList,
+  addTodo,
+  removeTodo,
+} from '../../core/thunks/todo';
+import { selectUserDataState } from '../../core/selectors/user';
 
 const TodoPage: React.FC = memo(() => {
   const todoList = useSelector(selectTodoListState);
+  const user = useSelector(selectUserDataState);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    localStorage.setItem('todoList', JSON.stringify(todoList));
-  }, [todoList]);
+    if (user) dispatch(getTodoList(user.uid));
+  }, []);
 
   const onAddTodo = useCallback((todo: ITodo) => {
-    dispatch(addTodo(todo));
+    if (user) dispatch(addTodo(todo, user));
   }, []);
 
   const onRemoveTodo = useCallback((todo: ITodo) => {
-    dispatch(removeTodo(todo));
+    if (user) dispatch(removeTodo(todo, user));
   }, []);
 
   const onToggleTodo = useCallback((todo: ITodo) => {
-    dispatch(toggleTodo(todo));
+    if (user) dispatch(toggleTodo(todo, user));
   }, []);
 
   return (
