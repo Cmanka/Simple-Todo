@@ -1,10 +1,10 @@
-import React from 'react';
-import { StyledDetailTodoBlock } from './styled';
+import React, { FC } from 'react';
+import * as Styled from './styled';
 import { TodoDetailProps } from './types';
 
-const TodoDetail: React.FC<TodoDetailProps> = ({ todo }: TodoDetailProps) => {
+const TodoDetail: FC<TodoDetailProps> = ({ todo }: TodoDetailProps) => {
   return (
-    <StyledDetailTodoBlock>
+    <Styled.DetailTodoBlock>
       <strong>Id:</strong>
       {todo.id}
       <br />
@@ -13,7 +13,7 @@ const TodoDetail: React.FC<TodoDetailProps> = ({ todo }: TodoDetailProps) => {
       <br />
       <strong>Completed:</strong>
       {todo.completed === true ? 'completed' : 'not completed'}
-    </StyledDetailTodoBlock>
+    </Styled.DetailTodoBlock>
   );
 };
 

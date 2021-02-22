@@ -1,27 +1,63 @@
 import {
-  userLoading,
-  userLoadingSuccess,
-  userLoadingFailed,
+  userProfile,
+  userProfileSuccess,
+  userProfileFailed,
+  userAvatar,
+  userAvatarSuccess,
+  userAvatarFailed,
+  userUpdateAvatar,
+  userUpdateAvatarSuccess,
+  userUpdateAvatarFailed,
 } from '../actions/user';
 import * as UserService from '../services/user';
 import { Dispatch } from 'redux';
-import firebase from '../firebase/index';
+import { auth } from '../firebase/index';
 
 export const getUserThunk = () => {
-  return (dispatch: Dispatch) => {
-    dispatch(userLoading());
-    const user = firebase.auth().currentUser;
+  return (dispatch: Dispatch<any>): void => {
+    dispatch(userProfile());
+    const user = auth.currentUser;
     if (user) {
       UserService.getUser(user.uid).then(
         (data) => {
-          dispatch(userLoadingSuccess(data));
+          dispatch(userProfileSuccess(data));
+          dispatch(getUserAvatarThunk());
         },
         (error) => {
-          dispatch(userLoadingFailed(error.message));
+          dispatch(userProfileFailed(error.message));
         }
       );
     } else {
-      dispatch(userLoadingSuccess(null));
+      dispatch(userProfileSuccess(null));
     }
+  };
+};
+
+export const getUserAvatarThunk = () => {
+  return (dispatch: Dispatch): void => {
+    dispatch(userAvatar());
+    UserService.getUserAvatar(auth.currentUser.uid).then(
+      (url) => {
+        dispatch(userAvatarSuccess(url));
+      },
+      (error) => {
+        dispatch(userAvatarFailed(error));
+      }
+    );
+  };
+};
+
+export const updateUserAvatarThunk = (file: File) => {
+  return (dispatch: Dispatch<any>): void => {
+    dispatch(userUpdateAvatar());
+    UserService.updateUserAvatar(auth.currentUser.uid, file).then(
+      () => {
+        dispatch(userUpdateAvatarSuccess());
+        dispatch(getUserAvatarThunk());
+      },
+      (error) => {
+        dispatch(userUpdateAvatarFailed(error.message));
+      }
+    );
   };
 };

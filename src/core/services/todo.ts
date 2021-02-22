@@ -1,19 +1,16 @@
-import { IUser } from './../interfaces/user';
 import { FirebaseCollection } from './../constants/collections';
 import { ITodo } from './../interfaces/todo';
-import firebase from '../firebase/index';
+import { firestore } from '../firebase/index';
 
 export const getTodoList = (uid: string): Promise<ITodo[]> =>
-  firebase
-    .firestore()
+  firestore
     .collection(FirebaseCollection.Todo)
     .doc(uid)
     .get()
     .then((doc) => doc.data()?.todoList);
 
 export const getTodoById = (id: string, uid: string): Promise<ITodo> =>
-  firebase
-    .firestore()
+  firestore
     .collection(FirebaseCollection.Todo)
     .doc(uid)
     .get()
@@ -21,31 +18,25 @@ export const getTodoById = (id: string, uid: string): Promise<ITodo> =>
 
 export const addTodo = async (
   todo: ITodo,
-  { uid }: IUser
+  uid: string
 ): Promise<ITodo | void> => {
   const res = await getCollection(uid);
 
   if (!res.data()) {
-    return firebase
-      .firestore()
+    return firestore
       .collection(FirebaseCollection.Todo)
       .doc(uid)
       .set({ todoList: [todo] });
   }
-  return firebase
-    .firestore()
+  return firestore
     .collection(FirebaseCollection.Todo)
     .doc(uid)
     .set({ todoList: [...res.data()?.todoList, todo] });
 };
 
-export const removeTodo = async (
-  todo: ITodo,
-  { uid }: IUser
-): Promise<void> => {
+export const removeTodo = async (todo: ITodo, uid: string): Promise<void> => {
   const res = await getCollection(uid);
-  return firebase
-    .firestore()
+  return firestore
     .collection(FirebaseCollection.Todo)
     .doc(uid)
     .update({
@@ -55,13 +46,9 @@ export const removeTodo = async (
     });
 };
 
-export const toggleTodo = async (
-  todo: ITodo,
-  { uid }: IUser
-): Promise<void> => {
+export const toggleTodo = async (todo: ITodo, uid: string): Promise<void> => {
   const res = await getCollection(uid);
-  return firebase
-    .firestore()
+  return firestore
     .collection(FirebaseCollection.Todo)
     .doc(uid)
     .update({
@@ -74,9 +61,5 @@ export const toggleTodo = async (
 };
 
 const getCollection = (uid: string) => {
-  return firebase
-    .firestore()
-    .collection(FirebaseCollection.Todo)
-    .doc(uid)
-    .get();
+  return firestore.collection(FirebaseCollection.Todo).doc(uid).get();
 };

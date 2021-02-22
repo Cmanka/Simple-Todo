@@ -1,10 +1,10 @@
-import React, { MouseEvent, useState } from 'react';
+import React, { FC, MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { registerThunk } from '../../../../../core/thunks/auth';
 import Input from '../../../components/Input/Input';
-import { StyledButton, StyledInputDiv } from './styled';
+import * as Styled from './styled';
 
-const RegisterForm: React.FC = () => {
+const RegisterForm: FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
@@ -44,7 +44,7 @@ const RegisterForm: React.FC = () => {
 
   return (
     <form onSubmit={registerSubmit}>
-      <StyledInputDiv>
+      <Styled.InputDiv>
         <Input
           label="Email"
           name="email"
@@ -52,8 +52,8 @@ const RegisterForm: React.FC = () => {
           onChange={changeEmailHandler}
           value={email}
         />
-      </StyledInputDiv>
-      <StyledInputDiv>
+      </Styled.InputDiv>
+      <Styled.InputDiv>
         <Input
           label="Password"
           name="password"
@@ -62,8 +62,8 @@ const RegisterForm: React.FC = () => {
           onChange={changePasswordHandler}
           value={password}
         />
-      </StyledInputDiv>
-      <StyledInputDiv>
+      </Styled.InputDiv>
+      <Styled.InputDiv>
         <Input
           label="First name"
           name="firstName"
@@ -71,8 +71,8 @@ const RegisterForm: React.FC = () => {
           onChange={changeFirstNameHandler}
           value={firstName}
         />
-      </StyledInputDiv>
-      <StyledInputDiv>
+      </Styled.InputDiv>
+      <Styled.InputDiv>
         <Input
           label="Last name"
           name="lastName"
@@ -80,8 +80,8 @@ const RegisterForm: React.FC = () => {
           onChange={changeLastNameHandler}
           value={lastName}
         />
-      </StyledInputDiv>
-      <StyledButton type="submit">Register</StyledButton>
+      </Styled.InputDiv>
+      <Styled.Button type="submit">Register</Styled.Button>
     </form>
   );
 };

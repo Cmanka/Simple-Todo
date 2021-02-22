@@ -1,31 +1,38 @@
-import { AuthActionTypes } from '../actions/auth';
+import { AuthAction, AuthActionTypes } from '../actions/auth';
 
 export interface State {
   data: {
     uid: string;
-  } | null;
+  };
   isLoading: boolean;
-  error: string | null;
+  error: string;
+  authorized: boolean;
 }
 
 const initialState: State = {
   data: null,
   isLoading: false,
+  authorized: false,
   error: null,
 };
 
-export const reducer = (state: State = initialState, action: any): State => {
+export const reducer = (
+  state: State = initialState,
+  action: AuthAction
+): State => {
   switch (action.type) {
-    case AuthActionTypes.LOGIN_LOADING: {
+    case AuthActionTypes.LOGIN: {
       return {
         ...state,
         isLoading: true,
+        authorized: false,
       };
     }
     case AuthActionTypes.LOGIN_SUCCESS: {
       return {
         ...state,
         isLoading: false,
+        authorized: true,
         error: null,
         data: {
           uid: action.payload.uid,
@@ -36,19 +43,22 @@ export const reducer = (state: State = initialState, action: any): State => {
       return {
         ...state,
         isLoading: false,
+        authorized: false,
         error: action.payload.error,
       };
     }
-    case AuthActionTypes.REGISTER_LOADING: {
+    case AuthActionTypes.REGISTER: {
       return {
         ...state,
         isLoading: true,
+        authorized: false,
       };
     }
     case AuthActionTypes.REGISTER_SUCCESS: {
       return {
         ...state,
         isLoading: false,
+        authorized: true,
         error: null,
         data: {
           uid: action.payload.uid,
@@ -60,7 +70,11 @@ export const reducer = (state: State = initialState, action: any): State => {
         ...state,
         isLoading: false,
         error: action.payload.error,
+        authorized: false,
       };
+    }
+    case AuthActionTypes.LOGOUT: {
+      return initialState;
     }
     default: {
       return state;

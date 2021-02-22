@@ -1,9 +1,9 @@
-import React, { useState, MouseEvent, memo } from 'react';
-import { StyledInput, StyledTodoForm } from './styled';
+import React, { FC, useState, MouseEvent, memo } from 'react';
+import * as Styled from './styled';
 import { TodoFormProps } from './types';
 
-const TodoForm: React.FC<TodoFormProps> = memo(({ onAdd }: TodoFormProps) => {
-  const [title, setTitle] = useState<string>('');
+const TodoForm: FC<TodoFormProps> = memo(({ onAdd }: TodoFormProps) => {
+  const [title, setTitle] = useState('');
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -23,15 +23,15 @@ const TodoForm: React.FC<TodoFormProps> = memo(({ onAdd }: TodoFormProps) => {
   };
 
   return (
-    <StyledTodoForm>
-      <StyledInput
+    <Styled.TodoForm>
+      <Styled.Input
         onChange={changeHandler}
         value={title}
         type="text"
         placeholder="Enter todo item"
       />
       <button onClick={addHandler}>+</button>
-    </StyledTodoForm>
+    </Styled.TodoForm>
   );
 });
 

@@ -1,34 +1,26 @@
-import React, { memo } from 'react';
+import React, { memo, FC } from 'react';
 import { TodoProps } from './types';
-import {
-  StyledTodoLabel,
-  StyledTitle,
-  linkStyle,
-  StyledButton,
-  StyledInput,
-} from './styled';
+import * as Styled from './styled';
 import { Link } from 'react-router-dom';
 
-const Todo: React.FC<TodoProps> = memo(
-  ({ todo, onToggle, onRemove }: TodoProps) => {
-    const url = `/todo/${todo.id}`;
-    return (
-      <li key={todo.id}>
-        <StyledTodoLabel>
-          <StyledInput
-            type="checkbox"
-            checked={todo.completed}
-            onChange={() => onToggle(todo)}
-          />
-          <StyledTitle isCompleted={todo.completed}>{todo.title}</StyledTitle>
-          <StyledButton onClick={() => onRemove(todo)}>Remove</StyledButton>
-          <Link to={url} style={linkStyle}>
-            Detaile
-          </Link>
-        </StyledTodoLabel>
-      </li>
-    );
-  }
-);
+const Todo: FC<TodoProps> = memo(({ todo, onToggle, onRemove }: TodoProps) => {
+  const url = `/todo/${todo.id}`;
+  return (
+    <li>
+      <Styled.TodoLabel>
+        <Styled.Input
+          type="checkbox"
+          checked={todo.completed}
+          onChange={() => onToggle(todo)}
+        />
+        <Styled.Title isCompleted={todo.completed}>{todo.title}</Styled.Title>
+        <Styled.Button onClick={() => onRemove(todo)}>Remove</Styled.Button>
+        <Link to={url} style={Styled.linkStyle}>
+          Detaile
+        </Link>
+      </Styled.TodoLabel>
+    </li>
+  );
+});
 
 export default Todo;

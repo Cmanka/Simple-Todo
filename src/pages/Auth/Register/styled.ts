@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 
-export const StyledFormDiv = styled.div`
+export const FormDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-export const StyledError = styled.span`
+export const Error = styled.span`
   color: red;
 `;
 
-export const StyledFormTitle = styled.h1`
+export const FormTitle = styled.h1`
   font-size: 38px;
 `;

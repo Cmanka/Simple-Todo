@@ -1,28 +1,19 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './Header.css';
 import { useSelector } from 'react-redux';
-import {
-  selectUserDataState,
-  selectUserLoadingState,
-} from '../../../core/selectors/user';
-import { selectAuthLoadingState } from '../../selectors/auth';
+import { selectAuthLoadingState, selectAuthUser } from '../../selectors/auth';
 import UnauthNavbar from './components/UnauthorizedNavbar/UnauthNavbar';
 import AuthNavbar from './components/AuthorizedNavbar/AuthNavbar';
 
-const Header: React.FC = () => {
-  const user = useSelector(selectUserDataState);
+const Header: FC = () => {
   const isLoading = useSelector(selectAuthLoadingState);
-  const isUserLoading = useSelector(selectUserLoadingState);
+  const user = useSelector(selectAuthUser);
 
-  if (isLoading || isUserLoading) {
+  if (isLoading) {
     return <nav></nav>;
   }
 
-  if (!user) {
-    return <UnauthNavbar />;
-  }
-
-  return <AuthNavbar />;
+  return <>{user ? <AuthNavbar /> : <UnauthNavbar />}</>;
 };
 
 export default Header;

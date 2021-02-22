@@ -1,10 +1,10 @@
-import React, { MouseEvent, useState } from 'react';
+import React, { FC, MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginThunk } from '../../../../../core/thunks/auth';
 import Input from '../../../components/Input/Input';
-import { StyledButton, StyledInputDiv } from './styled';
+import * as Styled from './styled';
 
-const LoginForm: React.FC = () => {
+const LoginForm: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <form onSubmit={loginSubmit}>
-      <StyledInputDiv>
+      <Styled.InputDiv>
         <Input
           label="Email"
           name="email"
@@ -36,8 +36,8 @@ const LoginForm: React.FC = () => {
           onChange={changeEmailHandler}
           value={email}
         />
-      </StyledInputDiv>
-      <StyledInputDiv>
+      </Styled.InputDiv>
+      <Styled.InputDiv>
         <Input
           label="Password"
           name="password"
@@ -46,8 +46,8 @@ const LoginForm: React.FC = () => {
           onChange={changePasswordHandler}
           value={password}
         />
-      </StyledInputDiv>
-      <StyledButton type="submit">Login</StyledButton>
+      </Styled.InputDiv>
+      <Styled.Button type="submit">Login</Styled.Button>
     </form>
   );
 };

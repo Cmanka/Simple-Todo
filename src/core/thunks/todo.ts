@@ -1,25 +1,24 @@
-import { IUser } from './../interfaces/user';
 import { ITodo } from './../interfaces/todo';
 import { Dispatch } from 'redux';
 import {
-  addTodoLoading,
+  addTodo,
   addTodoSuccess,
   addTodoFailed,
-  removeTodoLoading,
+  removeTodo,
   removeTodoSuccess,
   removeTodoFailed,
-  fetchTodoListLoading,
+  fetchTodoList,
   fetchTodoListSuccess,
   fetchTodoListFailed,
-  toggleTodoLoading,
+  toggleTodo,
   toggleTodoSuccess,
   toggleTodoFailed,
 } from '../actions/todo';
 import * as TodoService from '../services/todo';
 
 export const getTodoList = (uid: string) => {
-  return (dispatch: Dispatch) => {
-    dispatch(fetchTodoListLoading());
+  return (dispatch: Dispatch): void => {
+    dispatch(fetchTodoList());
     TodoService.getTodoList(uid).then(
       (todoList) => {
         if (!todoList) dispatch(fetchTodoListSuccess([]));
@@ -32,10 +31,10 @@ export const getTodoList = (uid: string) => {
   };
 };
 
-export const addTodo = (todo: ITodo, user: IUser) => {
-  return (dispatch: Dispatch) => {
-    dispatch(addTodoLoading());
-    TodoService.addTodo(todo, user).then(
+export const onAddTodo = (todo: ITodo, uid: string) => {
+  return (dispatch: Dispatch): void => {
+    dispatch(addTodo());
+    TodoService.addTodo(todo, uid).then(
       () => {
         dispatch(addTodoSuccess(todo));
       },
@@ -46,10 +45,10 @@ export const addTodo = (todo: ITodo, user: IUser) => {
   };
 };
 
-export const removeTodo = (todo: ITodo, user: IUser) => {
-  return (dispatch: Dispatch) => {
-    dispatch(removeTodoLoading());
-    TodoService.removeTodo(todo, user).then(
+export const onRemoveTodo = (todo: ITodo, uid: string) => {
+  return (dispatch: Dispatch): void => {
+    dispatch(removeTodo());
+    TodoService.removeTodo(todo, uid).then(
       () => {
         dispatch(removeTodoSuccess(todo));
       },
@@ -60,10 +59,10 @@ export const removeTodo = (todo: ITodo, user: IUser) => {
   };
 };
 
-export const toggleTodo = (todo: ITodo, user: IUser) => {
-  return (dispatch: Dispatch) => {
-    dispatch(toggleTodoLoading());
-    TodoService.toggleTodo(todo, user).then(
+export const onToggleTodo = (todo: ITodo, uid: string) => {
+  return (dispatch: Dispatch): void => {
+    dispatch(toggleTodo());
+    TodoService.toggleTodo(todo, uid).then(
       () => {
         dispatch(toggleTodoSuccess(todo));
       },

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
 
-export const StyledDetailTodoBlock = styled.div`
+export const DetailTodoBlock = styled.div`
   text-align: center;
 `;

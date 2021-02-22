@@ -1,5 +1,5 @@
 import styled from 'styled-components';
 
-export const StyledDetailsPage = styled.div`
+export const DetailsPage = styled.div`
   text-align: center;
 `;

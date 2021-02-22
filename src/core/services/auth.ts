@@ -1,16 +1,23 @@
 import { FirebaseCollection } from '../constants/collections';
-import firebase from '../firebase/index';
+import { auth, firestore } from '../firebase/index';
+import { IRegisterForm } from '../interfaces/register-form';
 import { IUser } from '../interfaces/user';
 
-export const login = (email: string, password: string) => {
-  return firebase.auth().signInWithEmailAndPassword(email, password);
+export const login = (email: string, password: string): Promise<string> => {
+  return auth
+    .signInWithEmailAndPassword(email, password)
+    .then(({ user }) => user.uid);
 };
 
-export const logout = () => firebase.auth().signOut();
+export const logout = (): Promise<void> => auth.signOut();
 
-export const register = ({ email, password, firstName, lastName }: any) => {
-  return firebase
-    .auth()
+export const register = ({
+  email,
+  password,
+  firstName,
+  lastName,
+}: IRegisterForm): Promise<IUser> => {
+  return auth
     .createUserWithEmailAndPassword(email, password)
     .then(({ user }) => {
       const newUser: Omit<IUser, 'uid'> = {
@@ -18,13 +25,12 @@ export const register = ({ email, password, firstName, lastName }: any) => {
         firstName,
         lastName,
       };
-      return firebase
-        .firestore()
+      return firestore
         .collection(FirebaseCollection.Users)
-        .doc(user?.uid)
+        .doc(user.uid)
         .set(newUser)
         .then(() =>
-          user?.getIdTokenResult().then(() => ({
+          user.getIdTokenResult().then(() => ({
             ...newUser,
             uid: user.uid,
           }))

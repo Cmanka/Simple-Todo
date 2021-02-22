@@ -1,11 +1,11 @@
-import React from 'react';
-import { StyledHeader, Title } from './styled';
+import React, { FC } from 'react';
+import * as Styled from './styled';
 
-const Header: React.FC = () => {
+const Header: FC = () => {
   return (
-    <StyledHeader>
-      <Title>Simple Todo</Title>
-    </StyledHeader>
+    <Styled.Header>
+      <Styled.Title>Simple Todo</Styled.Title>
+    </Styled.Header>
   );
 };
 

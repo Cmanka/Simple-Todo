@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledTodoForm = styled.div`
+export const TodoForm = styled.div`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -8,7 +8,7 @@ export const StyledTodoForm = styled.div`
   border: 1px solid black;
 `;
 
-export const StyledInput = styled.input`
+export const Input = styled.input`
   width: 90%;
   font-size: 20px;
 `;

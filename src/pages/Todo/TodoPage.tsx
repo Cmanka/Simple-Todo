@@ -1,43 +1,38 @@
-import React, { useCallback, memo } from 'react';
+import React, { FC, useCallback, memo } from 'react';
 import Footer from './components/Footer/Footer';
 import TodoForm from './components/TodoForm/TodoForm';
 import TodoList from './components/TodoList/TodoList';
-import { StyledTodoPage } from './styled';
+import * as Styled from './styled';
 import Header from './components/Header/Header';
 import { ITodo } from '../../core/interfaces/todo';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTodoListState } from '../../core/selectors/todo';
-import {
-  toggleTodo,
-  getTodoList,
-  addTodo,
-  removeTodo,
-} from '../../core/thunks/todo';
-import { selectUserDataState } from '../../core/selectors/user';
+import * as TodoAct from '../../core/thunks/todo';
+import { selectUserID } from '../../core/selectors/auth';
 
-const TodoPage: React.FC = memo(() => {
+const TodoPage: FC = memo(() => {
   const todoList = useSelector(selectTodoListState);
-  const user = useSelector(selectUserDataState);
+  const uid = useSelector(selectUserID);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    if (user) dispatch(getTodoList(user.uid));
+    dispatch(TodoAct.getTodoList(uid));
   }, []);
 
   const onAddTodo = useCallback((todo: ITodo) => {
-    if (user) dispatch(addTodo(todo, user));
+    dispatch(TodoAct.onAddTodo(todo, uid));
   }, []);
 
   const onRemoveTodo = useCallback((todo: ITodo) => {
-    if (user) dispatch(removeTodo(todo, user));
+    dispatch(TodoAct.onRemoveTodo(todo, uid));
   }, []);
 
   const onToggleTodo = useCallback((todo: ITodo) => {
-    if (user) dispatch(toggleTodo(todo, user));
+    dispatch(TodoAct.onToggleTodo(todo, uid));
   }, []);
 
   return (
-    <StyledTodoPage>
+    <Styled.TodoPage>
       <Header />
       <TodoForm onAdd={onAddTodo} />
       <TodoList
@@ -46,7 +41,7 @@ const TodoPage: React.FC = memo(() => {
         onRemove={onRemoveTodo}
       />
       <Footer />
-    </StyledTodoPage>
+    </Styled.TodoPage>
   );
 });
 

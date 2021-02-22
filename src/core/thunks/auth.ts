@@ -1,22 +1,24 @@
-import { getUserThunk } from './user';
 import { Dispatch } from 'redux';
 import {
   loginFailed,
-  loginLoading,
+  login,
   loginSuccess,
-  logoutAction,
-  registerLoading,
+  logout,
+  register,
   registerSuccess,
   registerFailed,
 } from '../actions/auth';
 import * as AuthService from '../services/auth';
+import { IRegisterForm } from '../interfaces/register-form';
+import { getUserThunk } from './user';
+import { userClearData } from '../actions/user';
 
 export const loginThunk = (email: string, password: string) => {
-  return (dispatch: Dispatch<any>) => {
-    dispatch(loginLoading());
+  return (dispatch: Dispatch<any>): void => {
+    dispatch(login());
     AuthService.login(email, password).then(
-      (data) => {
-        dispatch(loginSuccess(data.user?.uid));
+      (uid) => {
+        dispatch(loginSuccess(uid));
         dispatch(getUserThunk());
       },
       (error) => {
@@ -27,10 +29,10 @@ export const loginThunk = (email: string, password: string) => {
 };
 
 export const logoutThunk = () => {
-  return (dispatch: Dispatch<any>) => {
+  return (dispatch: Dispatch): void => {
     AuthService.logout().then(() => {
-      dispatch(logoutAction());
-      dispatch(getUserThunk());
+      dispatch(logout());
+      dispatch(userClearData());
     });
   };
 };
@@ -40,9 +42,9 @@ export const registerThunk = ({
   password,
   firstName,
   lastName,
-}: any) => {
-  return (dispatch: Dispatch<any>) => {
-    dispatch(registerLoading());
+}: IRegisterForm) => {
+  return (dispatch: Dispatch<any>): void => {
+    dispatch(register());
     AuthService.register({
       email,
       password,
@@ -50,7 +52,7 @@ export const registerThunk = ({
       lastName,
     }).then(
       (user) => {
-        dispatch(registerSuccess(user?.uid));
+        dispatch(registerSuccess(user.uid));
         dispatch(getUserThunk());
       },
       (error) => {

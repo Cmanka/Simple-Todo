@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { CompletedProps } from './types';
 
-export const StyledTodoLabel = styled.label`
+export const TodoLabel = styled.label`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -11,7 +11,7 @@ export const StyledTodoLabel = styled.label`
   font-size: 36px;
 `;
 
-export const StyledTitle = styled.span`
+export const Title = styled.span`
   flex-basis: 60%;
   text-decoration: ${(props: CompletedProps) =>
     props.isCompleted ? 'line-through' : ''};
@@ -26,10 +26,10 @@ export const linkStyle = {
   padding: '5px 10px',
 };
 
-export const StyledInput = styled.input`
+export const Input = styled.input`
   flex-basis: 5%;
 `;
 
-export const StyledButton = styled.button`
+export const Button = styled.button`
   flex-basis: 10%;
 `;

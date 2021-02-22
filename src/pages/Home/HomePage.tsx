@@ -1,11 +1,11 @@
-import React from 'react';
-import { StyledHomePage } from './styled';
+import React, { FC } from 'react';
+import * as Styled from './styled';
 
-const HomePage: React.FC = () => {
+const HomePage: FC = () => {
   return (
-    <StyledHomePage>
+    <Styled.HomePage>
       <h1>Home page</h1>
-    </StyledHomePage>
+    </Styled.HomePage>
   );
 };
 

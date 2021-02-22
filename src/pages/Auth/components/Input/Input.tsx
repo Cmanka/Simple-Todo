@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { InputProps } from './types';
 
-const Input: React.FC<InputProps> = ({
+const Input: FC<InputProps> = ({
   type = 'text',
   placeholder,
   value,

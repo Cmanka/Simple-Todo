@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
-const UnauthNavbar: React.FC = () => {
+const UnauthNavbar: FC = () => {
   return (
     <nav>
       <ul className="header-ul">

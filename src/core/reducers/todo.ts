@@ -1,11 +1,11 @@
-import { ITodo } from './../interfaces/todo';
-import { TodoActionTypes } from '../actions/todo';
+import { ITodo } from '../interfaces/todo';
+import { TodoAction, TodoActionTypes } from '../actions/todo';
 
 export interface State {
-  todo: ITodo | null;
+  todo: ITodo;
   todoList: ITodo[];
   isLoading: boolean;
-  error: string | null;
+  error: string;
 }
 
 const initialState: State = {
@@ -15,9 +15,12 @@ const initialState: State = {
   error: null,
 };
 
-export const reducer = (state: State = initialState, action: any): State => {
+export const reducer = (
+  state: State = initialState,
+  action: TodoAction
+): State => {
   switch (action.type) {
-    case TodoActionTypes.FETCH_TODOLIST_LOADING: {
+    case TodoActionTypes.FETCH_TODOLIST: {
       return {
         ...state,
         isLoading: true,
@@ -38,7 +41,7 @@ export const reducer = (state: State = initialState, action: any): State => {
         error: action.payload.error,
       };
     }
-    case TodoActionTypes.ADD_TODO_LOADING: {
+    case TodoActionTypes.ADD_TODO: {
       return {
         ...state,
         isLoading: true,
@@ -60,7 +63,7 @@ export const reducer = (state: State = initialState, action: any): State => {
         error: action.payload.error,
       };
     }
-    case TodoActionTypes.REMOVE_TODO_LOADING: {
+    case TodoActionTypes.REMOVE_TODO: {
       return {
         ...state,
         isLoading: true,
@@ -86,7 +89,7 @@ export const reducer = (state: State = initialState, action: any): State => {
         error: action.payload.error,
       };
     }
-    case TodoActionTypes.TOGGLE_TODO_LOADING: {
+    case TodoActionTypes.TOGGLE_TODO: {
       return {
         ...state,
         isLoading: true,
