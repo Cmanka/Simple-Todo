@@ -1,4 +1,5 @@
 import { Action } from '../interfaces/action';
+import { IRegisterForm } from '../interfaces/register-form';
 
 export enum AuthActionTypes {
   LOGIN = '[Auth] LOGIN',
@@ -10,76 +11,38 @@ export enum AuthActionTypes {
   LOGOUT = '[Auth] LOGOUT',
 }
 
-export const login = (): ILogin => {
-  return { type: AuthActionTypes.LOGIN };
+export const login = (
+  login: string,
+  password: string
+): Action<AuthActionTypes> => {
+  return { type: AuthActionTypes.LOGIN, payload: { login, password } };
 };
 
-export const loginSuccess = (uid: string): ILoginSuccess => {
+export const loginSuccess = (uid: string): Action<AuthActionTypes> => {
   return { type: AuthActionTypes.LOGIN_SUCCESS, payload: { uid } };
 };
 
-export const loginFailed = (error: string): ILoginFailed => {
+export const loginFailed = (error: string): Action<AuthActionTypes> => {
   return { type: AuthActionTypes.LOGIN_FAILED, payload: { error } };
 };
 
-export const register = (): IRegister => {
-  return { type: AuthActionTypes.REGISTER };
+export const register = (data: IRegisterForm): Action<AuthActionTypes> => {
+  return { type: AuthActionTypes.REGISTER, payload: { data } };
 };
 
-export const registerSuccess = (uid: string): IRegisterSuccess => {
+export const registerSuccess = (uid: string): Action<AuthActionTypes> => {
   return { type: AuthActionTypes.REGISTER_SUCCESS, payload: { uid } };
 };
 
-export const registerFailed = (error: string): IRegisterFailed => {
+export const registerFailed = (error: string): Action<AuthActionTypes> => {
   return {
     type: AuthActionTypes.REGISTER_FAILED,
     payload: { error },
   };
 };
 
-export const logout = (): ILogout => {
+export const logout = (): Action<AuthActionTypes> => {
   return {
     type: AuthActionTypes.LOGOUT,
   };
 };
-
-interface ILogin extends Action<AuthActionTypes> {
-  type: AuthActionTypes.LOGIN;
-}
-
-interface ILoginSuccess extends Action<AuthActionTypes> {
-  type: AuthActionTypes.LOGIN_SUCCESS;
-  payload: { uid: string };
-}
-
-interface ILoginFailed extends Action<AuthActionTypes> {
-  type: AuthActionTypes.LOGIN_FAILED;
-  payload: { error: string };
-}
-
-interface IRegister extends Action<AuthActionTypes> {
-  type: AuthActionTypes.REGISTER;
-}
-
-interface IRegisterSuccess extends Action<AuthActionTypes> {
-  type: AuthActionTypes.REGISTER_SUCCESS;
-  payload: { uid: string };
-}
-
-interface IRegisterFailed extends Action<AuthActionTypes> {
-  type: AuthActionTypes.REGISTER_FAILED;
-  payload: { error: string };
-}
-
-interface ILogout extends Action<AuthActionTypes> {
-  type: AuthActionTypes.LOGOUT;
-}
-
-export type AuthAction =
-  | ILogin
-  | ILoginSuccess
-  | ILoginFailed
-  | IRegister
-  | IRegisterSuccess
-  | IRegisterFailed
-  | ILogout;

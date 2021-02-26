@@ -1,4 +1,5 @@
-import { AuthAction, AuthActionTypes } from '../actions/auth';
+import { AuthActionTypes } from '../actions/auth';
+import { Action } from '../interfaces/action';
 
 export interface State {
   data: {
@@ -6,33 +7,29 @@ export interface State {
   };
   isLoading: boolean;
   error: string;
-  authorized: boolean;
 }
 
 const initialState: State = {
   data: null,
   isLoading: false,
-  authorized: false,
   error: null,
 };
 
 export const reducer = (
   state: State = initialState,
-  action: AuthAction
+  action: Action<AuthActionTypes>
 ): State => {
   switch (action.type) {
     case AuthActionTypes.LOGIN: {
       return {
         ...state,
         isLoading: true,
-        authorized: false,
       };
     }
     case AuthActionTypes.LOGIN_SUCCESS: {
       return {
         ...state,
         isLoading: false,
-        authorized: true,
         error: null,
         data: {
           uid: action.payload.uid,
@@ -43,7 +40,6 @@ export const reducer = (
       return {
         ...state,
         isLoading: false,
-        authorized: false,
         error: action.payload.error,
       };
     }
@@ -51,14 +47,12 @@ export const reducer = (
       return {
         ...state,
         isLoading: true,
-        authorized: false,
       };
     }
     case AuthActionTypes.REGISTER_SUCCESS: {
       return {
         ...state,
         isLoading: false,
-        authorized: true,
         error: null,
         data: {
           uid: action.payload.uid,
@@ -70,7 +64,6 @@ export const reducer = (
         ...state,
         isLoading: false,
         error: action.payload.error,
-        authorized: false,
       };
     }
     case AuthActionTypes.LOGOUT: {

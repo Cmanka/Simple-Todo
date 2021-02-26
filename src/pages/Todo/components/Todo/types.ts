@@ -1,9 +1,9 @@
-import { ITodo } from '../../../../core/interfaces/todo';
-
 export interface TodoProps {
-  todo: ITodo;
-  onToggle(todo: ITodo): void;
-  onRemove(todo: ITodo): void;
+  todoId: string;
+  todoCompleted: boolean;
+  todoTitle: string;
+  onToggle(todoId: string): void;
+  onRemove(todoId: string): void;
 }
 
 export interface CompletedProps {

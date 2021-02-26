@@ -1,12 +1,22 @@
+/* eslint-disable react/prop-types */
 import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
-import { Redirect, Route, RouteProps } from 'react-router-dom';
-import { selectAuthUser } from '../../selectors/auth';
+import { Redirect, Route } from 'react-router-dom';
+import { auth } from '../../firebase';
+import { Props } from './types';
 
-const PrivateRoute: FC<RouteProps> = ({ ...rest }) => {
-  const auth = useSelector(selectAuthUser);
-
-  return !auth ? <Redirect to="/login" /> : <Route {...rest} />;
+const PrivateRoute: FC<Props> = ({ component: Component, ...rest }) => {
+  const isAuth = auth.currentUser;
+  return (
+    <Route
+      {...rest}
+      render={(props) => {
+        const params = Object.keys(props.match.params);
+        if (isAuth) return <Component {...props} />;
+        if (params.length > 0) return <Redirect to="/404" />;
+        return <Redirect to="/login" />;
+      }}
+    />
+  );
 };
 
 export default PrivateRoute;

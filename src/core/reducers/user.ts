@@ -1,4 +1,5 @@
-import { UserAction, UserActionTypes } from '../actions/user';
+import { UserActionTypes } from '../actions/user';
+import { Action } from '../interfaces/action';
 import { IUser } from '../interfaces/user';
 
 export interface State {
@@ -14,12 +15,12 @@ const initialState: State = {
   isLoading: false,
   error: null,
   avatar: null,
-  isAvatarLoading: null,
+  isAvatarLoading: false,
 };
 
 export const reducer = (
   state: State = initialState,
-  action: UserAction
+  action: Action<UserActionTypes>
 ): State => {
   switch (action.type) {
     case UserActionTypes.USER_PROFILE: {
@@ -40,6 +41,26 @@ export const reducer = (
         ...state,
         error: action.payload.error,
         isLoading: false,
+      };
+    }
+    case UserActionTypes.USER_PROFILE_UPDATE: {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case UserActionTypes.USER_PROFILE_UPDATE_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        data: action.payload.user,
+      };
+    }
+    case UserActionTypes.USER_PROFILE_UPDATE_FAILED: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
       };
     }
     case UserActionTypes.USER_AVATAR: {

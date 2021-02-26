@@ -5,13 +5,15 @@ import * as fromUser from './user';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { getFirebase } from 'react-redux-firebase';
 import firebase from 'firebase/app';
 import { rrfconfig } from '../constants/config';
 import { createFirestoreInstance } from 'redux-firestore';
 import 'firebase/firestore';
+import createSagaMiddleware from 'redux-saga';
+import { rootSaga } from '../saga';
 
-const middlewares = [thunk.withExtraArgument(getFirebase)];
+const sagaMiddleware = createSagaMiddleware();
+const middlewares = [thunk, sagaMiddleware];
 
 export interface AppState {
   todo: fromTodo.State;
@@ -29,6 +31,8 @@ export const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(...middlewares))
 );
+
+sagaMiddleware.run(rootSaga);
 
 export const rrfProps = {
   firebase,

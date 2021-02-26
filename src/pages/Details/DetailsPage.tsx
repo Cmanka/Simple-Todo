@@ -1,15 +1,13 @@
 import React, { FC, memo } from 'react';
-import { useSelector } from 'react-redux';
+import { auth } from '../../core/firebase';
 import { ITodo } from '../../core/interfaces/todo';
-import { selectUserDataState } from '../../core/selectors/user';
 import { getTodoById } from '../../core/services/todo';
-import TodoDetail from './components/TodoDetail/TodoDetail';
 import * as Styled from './styled';
 import { DetailsProps } from './types';
 
 const DetailsPage: FC<DetailsProps> = memo(({ match }: DetailsProps) => {
   const [todo, setTodo] = React.useState<ITodo>();
-  const user = useSelector(selectUserDataState);
+  const user = auth.currentUser;
 
   React.useEffect(() => {
     getTodoById(match.params.id, user.uid).then((res) => {
@@ -21,12 +19,21 @@ const DetailsPage: FC<DetailsProps> = memo(({ match }: DetailsProps) => {
     <>
       {!todo ? (
         <Styled.DetailsPage>
-          <h1>Deatile information not founded todo({match.params.id})</h1>
+          <h1>Loading...</h1>
         </Styled.DetailsPage>
       ) : (
         <Styled.DetailsPage>
           <h1>Details Information about todo {match.params.id}</h1>
-          <TodoDetail todo={todo} />
+          <Styled.DetailTodoBlock>
+            <strong>Id:</strong>
+            {todo.id}
+            <br />
+            <strong>Title:</strong>
+            {todo.title}
+            <br />
+            <strong>Completed:</strong>
+            {todo.completed === true ? 'completed' : 'not completed'}
+          </Styled.DetailTodoBlock>
         </Styled.DetailsPage>
       )}
     </>

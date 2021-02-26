@@ -1,42 +1,31 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import {
-  selectAuthErrorState,
-  selectAuthLoadingState,
-  selectAuthUser,
-} from '../../../core/selectors/auth';
+import { selectAuthLoadingState } from '../../../core/selectors/auth';
 import * as Styled from './styled';
 import LoginForm from './components/LoginForm/LoginForm';
+import { auth } from '../../../core/firebase';
 
-const LoginPage: FC = () => {
+const LoginPage: FC = memo(() => {
   const isLoading = useSelector(selectAuthLoadingState);
-  const error = useSelector(selectAuthErrorState);
-  const user = useSelector(selectAuthUser);
-
-  if (isLoading) {
-    return (
-      <Styled.FormDiv>
-        <Styled.FormTitle>Loading...</Styled.FormTitle>
-      </Styled.FormDiv>
-    );
-  }
+  const user = auth.currentUser;
 
   return (
     <>
-      {user ? (
+      {isLoading ? (
+        <Styled.FormDiv>
+          <Styled.FormTitle>Loading...</Styled.FormTitle>
+        </Styled.FormDiv>
+      ) : user ? (
         <Redirect to="/" />
       ) : (
         <Styled.FormDiv>
           <Styled.FormTitle>Login form</Styled.FormTitle>
-          <Styled.Error hidden={error === null ? true : false}>
-            {error}
-          </Styled.Error>
           <LoginForm />
         </Styled.FormDiv>
       )}
     </>
   );
-};
+});
 
 export default LoginPage;

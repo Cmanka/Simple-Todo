@@ -5,6 +5,9 @@ export enum UserActionTypes {
   USER_PROFILE = `[User] USER_PROFILE`,
   USER_PROFILE_SUCCESS = '[User] USER_PROFILE_SUCCESS',
   USER_PROFILE_FAILED = '[User] USER_PROFILE_FAILED',
+  USER_PROFILE_UPDATE = '[User] USER_PROFILE_UPDATE',
+  USER_PROFILE_UPDATE_SUCCESS = '[User] USER_PROFILE_UPDATE_SUCCESS',
+  USER_PROFILE_UPDATE_FAILED = '[User] USER_PROFILE_UPDATE_FAILED',
   USER_AVATAR = '[User] USER_AVATAR',
   USER_AVATAR_SUCCESS = '[User] USER_AVATAR_SUCCESS',
   USER_AVATAR_FAILED = '[User] USER_AVATAR_FAILED',
@@ -14,107 +17,72 @@ export enum UserActionTypes {
   USER_CLEAR_DATA = '[User] USER_CLEAR_DATA',
 }
 
-export const userProfile = (): IUserProfile => {
+export const userProfile = (): Action<UserActionTypes> => {
   return { type: UserActionTypes.USER_PROFILE };
 };
 
-export const userProfileSuccess = (user: IUser): IUserProfileSuccess => {
+export const userProfileSuccess = (user: IUser): Action<UserActionTypes> => {
   return {
     type: UserActionTypes.USER_PROFILE_SUCCESS,
     payload: { user },
   };
 };
 
-export const userProfileFailed = (error: string): IUserProfileFailed => {
+export const userProfileFailed = (error: string): Action<UserActionTypes> => {
   return { type: UserActionTypes.USER_PROFILE_FAILED, payload: { error } };
 };
 
-export const userAvatar = (): IUserAvatar => {
+export const userProfileUpdate = (user: IUser): Action<UserActionTypes> => {
+  return { type: UserActionTypes.USER_PROFILE_UPDATE, payload: { user } };
+};
+
+export const userProfileUpdateSuccess = (
+  user: IUser
+): Action<UserActionTypes> => {
+  return {
+    type: UserActionTypes.USER_PROFILE_UPDATE_SUCCESS,
+    payload: { user },
+  };
+};
+
+export const userProfileUpdateFailed = (
+  error: string
+): Action<UserActionTypes> => {
+  return {
+    type: UserActionTypes.USER_PROFILE_UPDATE_FAILED,
+    payload: { error },
+  };
+};
+
+export const userAvatar = (): Action<UserActionTypes> => {
   return { type: UserActionTypes.USER_AVATAR };
 };
 
-export const userAvatarSuccess = (avatar: string): IUserAvatarSuccess => {
+export const userAvatarSuccess = (avatar: string): Action<UserActionTypes> => {
   return { type: UserActionTypes.USER_AVATAR_SUCCESS, payload: { avatar } };
 };
 
-export const userAvatarFailed = (error: string): IUserAvatarFailed => {
+export const userAvatarFailed = (error: string): Action<UserActionTypes> => {
   return { type: UserActionTypes.USER_AVATAR_FAILED, payload: { error } };
 };
 
-export const userUpdateAvatar = (): IUserUpdateAvatar => {
-  return { type: UserActionTypes.USER_UPDATE_AVATAR };
+export const userUpdateAvatar = (file: File): Action<UserActionTypes> => {
+  return { type: UserActionTypes.USER_UPDATE_AVATAR, payload: { file } };
 };
 
-export const userUpdateAvatarSuccess = (): IUserUpdateAvatarSuccess => {
+export const userUpdateAvatarSuccess = (): Action<UserActionTypes> => {
   return { type: UserActionTypes.USER_UPDATE_AVATAR_SUCCESS };
 };
 
 export const userUpdateAvatarFailed = (
   error: string
-): IUserUpdateAvatarFailed => {
+): Action<UserActionTypes> => {
   return {
     type: UserActionTypes.USER_UPDATE_AVATAR_FAILED,
     payload: { error },
   };
 };
 
-export const userClearData = (): IUserClearData => {
+export const userClearData = (): Action<UserActionTypes> => {
   return { type: UserActionTypes.USER_CLEAR_DATA };
 };
-
-interface IUserProfile extends Action<UserActionTypes> {
-  type: UserActionTypes.USER_PROFILE;
-}
-
-interface IUserProfileSuccess extends Action<UserActionTypes> {
-  type: UserActionTypes.USER_PROFILE_SUCCESS;
-  payload: { user: IUser };
-}
-
-interface IUserProfileFailed extends Action<UserActionTypes> {
-  type: UserActionTypes.USER_PROFILE_FAILED;
-  payload: { error: string };
-}
-
-interface IUserAvatar extends Action<UserActionTypes> {
-  type: UserActionTypes.USER_AVATAR;
-}
-
-interface IUserAvatarSuccess extends Action<UserActionTypes> {
-  type: UserActionTypes.USER_AVATAR_SUCCESS;
-  payload: { avatar: string };
-}
-
-interface IUserAvatarFailed extends Action<UserActionTypes> {
-  type: UserActionTypes.USER_AVATAR_FAILED;
-  payload: { error: string };
-}
-
-interface IUserUpdateAvatar extends Action<UserActionTypes> {
-  type: UserActionTypes.USER_UPDATE_AVATAR;
-}
-
-interface IUserUpdateAvatarSuccess extends Action<UserActionTypes> {
-  type: UserActionTypes.USER_UPDATE_AVATAR_SUCCESS;
-}
-
-interface IUserUpdateAvatarFailed extends Action<UserActionTypes> {
-  type: UserActionTypes.USER_UPDATE_AVATAR_FAILED;
-  payload: { error: string };
-}
-
-interface IUserClearData extends Action<UserActionTypes> {
-  type: UserActionTypes.USER_CLEAR_DATA;
-}
-
-export type UserAction =
-  | IUserProfile
-  | IUserProfileSuccess
-  | IUserProfileFailed
-  | IUserAvatar
-  | IUserAvatarSuccess
-  | IUserAvatarFailed
-  | IUserUpdateAvatar
-  | IUserUpdateAvatarSuccess
-  | IUserUpdateAvatarFailed
-  | IUserClearData;

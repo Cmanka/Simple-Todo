@@ -1,55 +1,65 @@
-import React, { FC, MouseEvent, useState } from 'react';
+import React, { FC, useEffect, memo } from 'react';
+import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { loginThunk } from '../../../../../core/thunks/auth';
-import Input from '../../../components/Input/Input';
+import { LoginFormValues } from './types';
 import * as Styled from './styled';
+import { login } from '../../../../../core/actions/auth';
 
-const LoginForm: FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const LoginForm: FC = memo(() => {
   const dispatch = useDispatch();
+  const { register, handleSubmit, errors } = useForm<LoginFormValues>();
 
-  const changeEmailHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
+  useEffect(() => {
+    register({ name: 'email' }, { required: 'Email is required' });
+    register(
+      { name: 'password' },
+      {
+        required: 'Password is required',
+        minLength: {
+          value: 6,
+          message: 'Min length is 6',
+        },
+      }
+    );
+  }, [register]);
 
-  const changePasswordHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPassword(event.target.value);
-  };
-
-  const loginSubmit = (event: MouseEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    dispatch(loginThunk(email, password));
-    setEmail('');
-    setPassword('');
-  };
+  const onSubmit = handleSubmit((data) => {
+    dispatch(login(data.email, data.password));
+  });
 
   return (
-    <form onSubmit={loginSubmit}>
+    <form onSubmit={onSubmit}>
       <Styled.InputDiv>
-        <Input
-          label="Email"
+        <label htmlFor="email">
+          <strong>Email</strong>
+        </label>
+        <input
+          type="email"
+          placeholder="enter email"
           name="email"
-          placeholder="Enter email"
-          onChange={changeEmailHandler}
-          value={email}
+          ref={register}
         />
+        {errors.email && (
+          <Styled.ErrorMessage>{errors.email.message}</Styled.ErrorMessage>
+        )}
       </Styled.InputDiv>
       <Styled.InputDiv>
-        <Input
-          label="Password"
-          name="password"
+        <label htmlFor="password">
+          <strong>Password</strong>
+        </label>
+        <input
           type="password"
-          placeholder="Enter password"
-          onChange={changePasswordHandler}
-          value={password}
+          placeholder="enter password"
+          name="password"
+          ref={register}
         />
+        {errors.password && (
+          <Styled.ErrorMessage>{errors.password.message}</Styled.ErrorMessage>
+        )}
       </Styled.InputDiv>
       <Styled.Button type="submit">Login</Styled.Button>
     </form>
   );
-};
+});
 
 export default LoginForm;

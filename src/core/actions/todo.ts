@@ -16,131 +16,61 @@ export enum TodoActionTypes {
   TOGGLE_TODO_FAILED = '[Todo] TOGGLE_TODO_FAILED',
 }
 
-export const fetchTodoList = (): IFetchTodoList => {
+export const fetchTodoList = (): Action<TodoActionTypes> => {
   return { type: TodoActionTypes.FETCH_TODOLIST };
 };
 
 export const fetchTodoListSuccess = (
   todoList: ITodo[]
-): IFetchTodoListSuccess => {
+): Action<TodoActionTypes> => {
   return {
     type: TodoActionTypes.FETCH_TODOLIST_SUCCESS,
     payload: { todoList },
   };
 };
 
-export const fetchTodoListFailed = (error: string): IFetchTodoListFailed => {
+export const fetchTodoListFailed = (error: string): Action<TodoActionTypes> => {
   return {
     type: TodoActionTypes.FETCH_TODOLIST_FAILED,
     payload: { error },
   };
 };
 
-export const addTodo = (): IAddTodo => {
-  return { type: TodoActionTypes.ADD_TODO };
+export const addTodo = (todo: ITodo): Action<TodoActionTypes> => {
+  return { type: TodoActionTypes.ADD_TODO, payload: { todo } };
 };
 
-export const addTodoSuccess = (todo: ITodo): IAddTodoSuccess => {
+export const addTodoSuccess = (todo: ITodo): Action<TodoActionTypes> => {
   return { type: TodoActionTypes.ADD_TODO_SUCCESS, payload: { todo } };
 };
 
-export const addTodoFailed = (error: string): IAddTodoFailed => {
+export const addTodoFailed = (error: string): Action<TodoActionTypes> => {
   return { type: TodoActionTypes.ADD_TODO_FAILED, payload: { error } };
 };
 
-export const removeTodo = (): IRemoveTodo => {
-  return { type: TodoActionTypes.REMOVE_TODO };
+export const removeTodo = (todoId: string): Action<TodoActionTypes> => {
+  return { type: TodoActionTypes.REMOVE_TODO, payload: { todoId } };
 };
 
-export const removeTodoSuccess = (todo: ITodo): IRemoveTodoSuccess => {
-  return { type: TodoActionTypes.REMOVE_TODO_SUCCESS, payload: { todo } };
+export const removeTodoSuccess = (todoId: string): Action<TodoActionTypes> => {
+  return { type: TodoActionTypes.REMOVE_TODO_SUCCESS, payload: { todoId } };
 };
 
-export const removeTodoFailed = (error: string): IRemoveTodoFailed => {
+export const removeTodoFailed = (error: string): Action<TodoActionTypes> => {
   return { type: TodoActionTypes.REMOVE_TODO_FAILED, payload: { error } };
 };
 
-export const toggleTodo = (): IToggleTodo => {
-  return { type: TodoActionTypes.TOGGLE_TODO };
+export const toggleTodo = (todoId: string): Action<TodoActionTypes> => {
+  return { type: TodoActionTypes.TOGGLE_TODO, payload: { todoId } };
 };
 
-export const toggleTodoSuccess = (todo: ITodo): IToggleTodoSuccess => {
-  return { type: TodoActionTypes.TOGGLE_TODO_SUCCESS, payload: { todo } };
+export const toggleTodoSuccess = (todoId: string): Action<TodoActionTypes> => {
+  return { type: TodoActionTypes.TOGGLE_TODO_SUCCESS, payload: { todoId } };
 };
 
-export const toggleTodoFailed = (error: string): IToggleTodoFailed => {
+export const toggleTodoFailed = (error: string): Action<TodoActionTypes> => {
   return {
     type: TodoActionTypes.TOGGLE_TODO_FAILED,
     payload: { error },
   };
 };
-
-interface IFetchTodoList extends Action<TodoActionTypes> {
-  type: TodoActionTypes.FETCH_TODOLIST;
-}
-
-interface IFetchTodoListSuccess extends Action<TodoActionTypes> {
-  type: TodoActionTypes.FETCH_TODOLIST_SUCCESS;
-  payload: { todoList: ITodo[] };
-}
-
-interface IFetchTodoListFailed extends Action<TodoActionTypes> {
-  type: TodoActionTypes.FETCH_TODOLIST_FAILED;
-  payload: { error: string };
-}
-
-interface IAddTodo extends Action<TodoActionTypes> {
-  type: TodoActionTypes.ADD_TODO;
-}
-
-interface IAddTodoSuccess extends Action<TodoActionTypes> {
-  type: TodoActionTypes.ADD_TODO_SUCCESS;
-  payload: { todo: ITodo };
-}
-
-interface IAddTodoFailed extends Action<TodoActionTypes> {
-  type: TodoActionTypes.ADD_TODO_FAILED;
-  payload: { error: string };
-}
-
-interface IRemoveTodo extends Action<TodoActionTypes> {
-  type: TodoActionTypes.REMOVE_TODO;
-}
-
-interface IRemoveTodoSuccess extends Action<TodoActionTypes> {
-  type: TodoActionTypes.REMOVE_TODO_SUCCESS;
-  payload: { todo: ITodo };
-}
-
-interface IRemoveTodoFailed extends Action<TodoActionTypes> {
-  type: TodoActionTypes.REMOVE_TODO_FAILED;
-  payload: { error: string };
-}
-
-interface IToggleTodo extends Action<TodoActionTypes> {
-  type: TodoActionTypes.TOGGLE_TODO;
-}
-
-interface IToggleTodoSuccess extends Action<TodoActionTypes> {
-  type: TodoActionTypes.TOGGLE_TODO_SUCCESS;
-  payload: { todo: ITodo };
-}
-
-interface IToggleTodoFailed extends Action<TodoActionTypes> {
-  type: TodoActionTypes.TOGGLE_TODO_FAILED;
-  payload: { error: string };
-}
-
-export type TodoAction =
-  | IFetchTodoList
-  | IFetchTodoListSuccess
-  | IFetchTodoListFailed
-  | IAddTodo
-  | IAddTodoSuccess
-  | IAddTodoFailed
-  | IRemoveTodo
-  | IRemoveTodoSuccess
-  | IRemoveTodoFailed
-  | IToggleTodo
-  | IToggleTodoSuccess
-  | IToggleTodoFailed;

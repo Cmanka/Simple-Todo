@@ -11,3 +11,7 @@ export const Button = styled.button`
   width: 100%;
   font-size: 18px;
 `;
+
+export const ErrorMessage = styled.span`
+  color: red;
+`;

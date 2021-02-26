@@ -1,15 +1,14 @@
 import { ITodo } from '../interfaces/todo';
-import { TodoAction, TodoActionTypes } from '../actions/todo';
+import { TodoActionTypes } from '../actions/todo';
+import { Action } from '../interfaces/action';
 
 export interface State {
-  todo: ITodo;
   todoList: ITodo[];
   isLoading: boolean;
   error: string;
 }
 
 const initialState: State = {
-  todo: null,
   todoList: [],
   isLoading: false,
   error: null,
@@ -17,7 +16,7 @@ const initialState: State = {
 
 export const reducer = (
   state: State = initialState,
-  action: TodoAction
+  action: Action<TodoActionTypes>
 ): State => {
   switch (action.type) {
     case TodoActionTypes.FETCH_TODOLIST: {
@@ -52,7 +51,6 @@ export const reducer = (
         ...state,
         isLoading: false,
         error: null,
-        todo: action.payload.todo,
         todoList: [...state.todoList, action.payload.todo],
       };
     }
@@ -74,11 +72,8 @@ export const reducer = (
         ...state,
         isLoading: false,
         error: null,
-        todo: action.payload.todo,
         todoList: [
-          ...state.todoList.filter(
-            (todo) => todo.id !== action.payload.todo.id
-          ),
+          ...state.todoList.filter((todo) => todo.id !== action.payload.todoId),
         ],
       };
     }
@@ -97,14 +92,13 @@ export const reducer = (
     }
     case TodoActionTypes.TOGGLE_TODO_SUCCESS: {
       const updatedList: ITodo[] = state.todoList.map((todo) =>
-        todo.id === action.payload.todo.id
+        todo.id === action.payload.todoId
           ? { ...todo, completed: !todo.completed }
           : todo
       );
       return {
         ...state,
         isLoading: false,
-        todo: action.payload.todo,
         todoList: updatedList,
         error: null,
       };

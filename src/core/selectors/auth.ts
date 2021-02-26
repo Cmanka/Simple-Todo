@@ -14,12 +14,7 @@ export const selectAuthErrorState = createSelector(
   (state) => state.error
 );
 
-export const selectAuthUser = createSelector(
+export const selectAuthData = createSelector(
   selectAuthState,
-  (state) => state.authorized
-);
-
-export const selectUserID = createSelector(
-  selectAuthState,
-  (state) => state.data.uid
+  (state) => state.data
 );

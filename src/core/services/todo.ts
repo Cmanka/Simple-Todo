@@ -7,21 +7,17 @@ export const getTodoList = (uid: string): Promise<ITodo[]> =>
     .collection(FirebaseCollection.Todo)
     .doc(uid)
     .get()
-    .then((doc) => doc.data()?.todoList);
+    .then((doc) => doc.data().todoList);
 
 export const getTodoById = (id: string, uid: string): Promise<ITodo> =>
   firestore
     .collection(FirebaseCollection.Todo)
     .doc(uid)
     .get()
-    .then((doc) => doc.data()?.todoList.find((item: ITodo) => item.id === id));
+    .then((doc) => doc.data().todoList.find((item: ITodo) => item.id === id));
 
-export const addTodo = async (
-  todo: ITodo,
-  uid: string
-): Promise<ITodo | void> => {
+export const addTodo = async (todo: ITodo, uid: string): Promise<void> => {
   const res = await getCollection(uid);
-
   if (!res.data()) {
     return firestore
       .collection(FirebaseCollection.Todo)
@@ -31,22 +27,26 @@ export const addTodo = async (
   return firestore
     .collection(FirebaseCollection.Todo)
     .doc(uid)
-    .set({ todoList: [...res.data()?.todoList, todo] });
+    .set({ todoList: [...res.data().todoList, todo] });
 };
 
-export const removeTodo = async (todo: ITodo, uid: string): Promise<void> => {
+export const removeTodo = async (
+  todoId: string,
+  uid: string
+): Promise<void> => {
   const res = await getCollection(uid);
   return firestore
     .collection(FirebaseCollection.Todo)
     .doc(uid)
     .update({
-      todoList: res
-        .data()
-        ?.todoList.filter((item: ITodo) => item.id !== todo.id),
+      todoList: res.data().todoList.filter((item: ITodo) => item.id !== todoId),
     });
 };
 
-export const toggleTodo = async (todo: ITodo, uid: string): Promise<void> => {
+export const toggleTodo = async (
+  todoId: string,
+  uid: string
+): Promise<void> => {
   const res = await getCollection(uid);
   return firestore
     .collection(FirebaseCollection.Todo)
@@ -54,8 +54,8 @@ export const toggleTodo = async (todo: ITodo, uid: string): Promise<void> => {
     .update({
       todoList: res
         .data()
-        ?.todoList.map((item: ITodo) =>
-          item.id === todo.id ? { ...todo, completed: !item.completed } : item
+        .todoList.map((item: ITodo) =>
+          item.id === todoId ? { ...item, completed: !item.completed } : item
         ),
     });
 };

@@ -3,13 +3,11 @@ import { auth, firestore } from '../firebase/index';
 import { IRegisterForm } from '../interfaces/register-form';
 import { IUser } from '../interfaces/user';
 
-export const login = (email: string, password: string): Promise<string> => {
+export const login = (login: string, password: string): Promise<string> => {
   return auth
-    .signInWithEmailAndPassword(email, password)
+    .signInWithEmailAndPassword(login, password)
     .then(({ user }) => user.uid);
 };
-
-export const logout = (): Promise<void> => auth.signOut();
 
 export const register = ({
   email,
@@ -37,3 +35,5 @@ export const register = ({
         );
     });
 };
+
+export const logout = (): Promise<void> => auth.signOut();

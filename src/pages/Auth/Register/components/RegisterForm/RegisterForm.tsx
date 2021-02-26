@@ -1,89 +1,119 @@
-import React, { FC, MouseEvent, useState } from 'react';
+import React, { FC, memo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { registerThunk } from '../../../../../core/thunks/auth';
-import Input from '../../../components/Input/Input';
 import * as Styled from './styled';
+import { useForm } from 'react-hook-form';
+import { RegisterFormValues } from './types';
+import { IRegisterForm } from '../../../../../core/interfaces/register-form';
+import { register as registerAction } from '../../../../../core/actions/auth';
 
-const RegisterForm: FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
+const RegisterForm: FC = memo(() => {
   const dispatch = useDispatch();
+  const { register, handleSubmit, errors } = useForm<RegisterFormValues>({
+    defaultValues: {
+      email: `test${Date.now()}@mail.com`,
+    },
+  });
 
-  const changeEmailHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
+  useEffect(() => {
+    register(
+      { name: 'firstName' },
+      {
+        required: 'First name is required',
+        minLength: {
+          value: 2,
+          message: 'Min length is 2',
+        },
+      }
+    );
+    register(
+      { name: 'lastName' },
+      {
+        required: 'Last name is required',
+        minLength: {
+          value: 2,
+          message: 'Min length is 2',
+        },
+      }
+    );
+    register({ name: 'email' }, { required: 'Email is required' });
+    register(
+      { name: 'password' },
+      {
+        required: 'Password is required',
+        minLength: {
+          value: 6,
+          message: 'Min length is 6',
+        },
+      }
+    );
+  }, [register]);
 
-  const changePasswordHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPassword(event.target.value);
-  };
-
-  const changeFirstNameHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setFirstName(event.target.value);
-  };
-
-  const changeLastNameHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setLastName(event.target.value);
-  };
-
-  const registerSubmit = (event: MouseEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    dispatch(registerThunk({ email, password, firstName, lastName }));
-    setPassword('');
-    setEmail('');
-    setFirstName('');
-    setLastName('');
-  };
+  const onSubmit = handleSubmit((data) => {
+    dispatch(registerAction({ ...(data as IRegisterForm) }));
+  });
 
   return (
-    <form onSubmit={registerSubmit}>
+    <form onSubmit={onSubmit}>
       <Styled.InputDiv>
-        <Input
-          label="Email"
-          name="email"
-          placeholder="Enter email"
-          onChange={changeEmailHandler}
-          value={email}
-        />
-      </Styled.InputDiv>
-      <Styled.InputDiv>
-        <Input
-          label="Password"
-          name="password"
-          type="password"
-          placeholder="Enter password"
-          onChange={changePasswordHandler}
-          value={password}
-        />
-      </Styled.InputDiv>
-      <Styled.InputDiv>
-        <Input
-          label="First name"
+        <label htmlFor="firstName">
+          <strong>First name</strong>
+        </label>
+        <input
+          type="text"
           name="firstName"
           placeholder="Enter first name"
-          onChange={changeFirstNameHandler}
-          value={firstName}
+          ref={register}
         />
+        {errors.firstName && (
+          <Styled.ErrorMessage>{errors.firstName.message}</Styled.ErrorMessage>
+        )}
       </Styled.InputDiv>
       <Styled.InputDiv>
-        <Input
-          label="Last name"
+        <label htmlFor="lastName">
+          <strong>Last name</strong>
+        </label>
+        <input
+          type="text"
           name="lastName"
-          placeholder="Enter last name"
-          onChange={changeLastNameHandler}
-          value={lastName}
+          placeholder="enter last name"
+          ref={register}
         />
+        {errors.lastName && (
+          <Styled.ErrorMessage>{errors.lastName.message}</Styled.ErrorMessage>
+        )}
       </Styled.InputDiv>
+      <Styled.InputDiv>
+        <label htmlFor="email">
+          <strong>Email</strong>
+        </label>
+        <input
+          type="email"
+          placeholder="enter email"
+          name="email"
+          ref={register}
+        />
+        {errors.email && (
+          <Styled.ErrorMessage>{errors.email.message}</Styled.ErrorMessage>
+        )}
+      </Styled.InputDiv>
+      <Styled.InputDiv>
+        <label htmlFor="password">
+          <strong>Password</strong>
+        </label>
+        <input
+          type="password"
+          placeholder="enter password"
+          name="password"
+          ref={register}
+        />
+        {errors.password && (
+          <Styled.ErrorMessage>{errors.password.message}</Styled.ErrorMessage>
+        )}
+      </Styled.InputDiv>
+
       <Styled.Button type="submit">Register</Styled.Button>
     </form>
   );
-};
+});
 
 export default RegisterForm;
